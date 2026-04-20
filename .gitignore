@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 src/__pycache__/
 artifacts/
 *.pkl
 venv/
 .env
+=======
+src/__pycache__
+>>>>>>> 8e7a4f7f8d27fd09975f26a21c6dece6d436772d

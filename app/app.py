@@ -4,9 +4,12 @@ import pickle
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+<<<<<<< HEAD
 if not os.path.exists("artifacts/similarity.pkl"):
     os.system("python src/model.py")
 
+=======
+>>>>>>> 8e7a4f7f8d27fd09975f26a21c6dece6d436772d
 movies = pickle.load(open(os.path.join(BASE_DIR, '..', 'artifacts', 'movies.pkl'), 'rb'))
 similarity = pickle.load(open(os.path.join(BASE_DIR, '..', 'artifacts', 'similarity.pkl'), 'rb'))
 
