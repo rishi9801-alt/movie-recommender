@@ -1,21 +1,29 @@
 import streamlit as st
 import os
 import pickle
+import pandas as pd
 
+# ---------------- BASE PATH (FIXED FOR DEPLOYMENT) ---------------- #
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ARTIFACTS_DIR = os.path.join(BASE_DIR, "..", "artifacts")
 
+movies_path = os.path.join(ARTIFACTS_DIR, "movies.pkl")
+similarity_path = os.path.join(ARTIFACTS_DIR, "similarity.pkl")
 
-if not os.path.exists("artifacts/similarity.pkl"):
-    os.system("python src/model.py")
+# ---------------- SAFETY CHECK ---------------- #
+if not os.path.exists(movies_path) or not os.path.exists(similarity_path):
+    st.error("Model files not found! Please ensure artifacts/ is uploaded in GitHub.")
+    st.stop()
 
-movies = pickle.load(open(os.path.join(BASE_DIR, '..', 'artifacts', 'movies.pkl'), 'rb'))
-similarity = pickle.load(open(os.path.join(BASE_DIR, '..', 'artifacts', 'similarity.pkl'), 'rb'))
+# ---------------- LOAD DATA ---------------- #
+movies = pickle.load(open(movies_path, "rb"))
+similarity = pickle.load(open(similarity_path, "rb"))
 
-# placeholder poster (stable)
+# ---------------- POSTER FUNCTION ---------------- #
 def fetch_poster(movie_title):
     return "https://placehold.co/300x450/png?text=Movie"
 
-# recommendation function
+# ---------------- RECOMMENDATION ENGINE ---------------- #
 def recommend(movie):
     index = movies[movies['title'] == movie].index[0]
     distances = similarity[index]
@@ -36,9 +44,7 @@ def recommend(movie):
 
     return names, posters
 
-
 # ---------------- UI ---------------- #
-
 st.set_page_config(page_title="Movie Recommender", layout="wide")
 
 st.title("🎬 Movie Recommendation System")
@@ -56,7 +62,7 @@ if st.button("Recommend"):
 
     for i in range(5):
         with cols[i]:
-            st.image(posters[i], width='stretch')
+            st.image(posters[i], use_container_width=True)
             st.markdown(
                 f"<div style='text-align: center; font-weight: bold;'>{names[i]}</div>",
                 unsafe_allow_html=True
