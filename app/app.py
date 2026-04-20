@@ -1,9 +1,11 @@
 import streamlit as st
+import os
 import pickle
 
-# load data
-movies = pickle.load(open('artifacts/movies.pkl', 'rb'))
-similarity = pickle.load(open('artifacts/similarity.pkl', 'rb'))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+movies = pickle.load(open(os.path.join(BASE_DIR, '..', 'artifacts', 'movies.pkl'), 'rb'))
+similarity = pickle.load(open(os.path.join(BASE_DIR, '..', 'artifacts', 'similarity.pkl'), 'rb'))
 
 # placeholder poster (stable)
 def fetch_poster(movie_title):
